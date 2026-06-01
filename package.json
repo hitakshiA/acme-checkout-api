@@ -1,0 +1,17 @@
+{
+  "name": "@acme/checkout-api",
+  "version": "2.34.1",
+  "private": true,
+  "type": "module",
+  "description": "Acme Checkout API - embeddable checkout and subscriptions for small online stores",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/index.ts",
+    "test": "node --test",
+    "test:pricing": "node --test test/pricing/",
+    "test:webhooks": "node --test test/webhooks/"
+  },
+  "license": "UNLICENSED"
+}
