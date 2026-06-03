@@ -6,6 +6,7 @@ import { createServer, type IncomingMessage, type Server, type ServerResponse } 
 import { randomUUID } from "node:crypto";
 import type { Db } from "./db.ts";
 import { handleCheckouts } from "./routes/checkouts.ts";
+import { handleWebhooks } from "./routes/webhooks.ts";
 
 export interface ServerConfig {
   port: number;
@@ -76,6 +77,9 @@ function match(method: string, pathname: string): { handler: Handler; params: Re
 route("GET", "/healthz", (ctx) => sendJson(ctx, 200, { ok: true }));
 route("POST", "/v1/checkouts", handleCheckouts);
 route("GET", "/v1/checkouts/:id", handleCheckouts);
+route("POST", "/v1/webhooks/endpoints", handleWebhooks);
+route("POST", "/v1/webhooks/endpoints/:id/test", handleWebhooks);
+route("POST", "/v1/webhooks/replay/:deliveryId", handleWebhooks);
 
 export function createApp(db: Db, config: Partial<ServerConfig> = {}): Server {
   const fullConfig: ServerConfig = {
