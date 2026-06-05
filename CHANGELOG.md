@@ -6,3 +6,7 @@ refer to the whole product (web included).
 ## v2.20.0 — 2026-06-03
 
 - webhook retry dashboard; web footer links
+
+## v2.20.1 — 2026-06-05
+
+- hotfix: webhook signature header casing

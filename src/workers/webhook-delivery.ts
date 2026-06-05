@@ -47,7 +47,7 @@ export async function deliverWithRetryPolicy(req: DeliveryRequest): Promise<Deli
     attempts = attempt;
     const headers: Record<string, string> = {
       "content-type": "application/json",
-      "X-Acme-signature": req.endpoint.sign(req.payload),
+      "x-acme-signature": req.endpoint.sign(req.payload),
       "x-acme-delivery-attempt": String(attempt),
       ...req.endpoint.headers,
     };
