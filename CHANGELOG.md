@@ -10,3 +10,7 @@ refer to the whole product (web included).
 ## v2.20.1 — 2026-06-05
 
 - hotfix: webhook signature header casing
+
+## v2.20.2 — 2026-06-10
+
+- deps bump; docs links on the 404 page
