@@ -14,3 +14,7 @@ refer to the whole product (web included).
 ## v2.20.2 — 2026-06-10
 
 - deps bump; docs links on the 404 page
+
+## v2.21.0 — 2026-06-12
+
+- subscription upgrade proration v1
