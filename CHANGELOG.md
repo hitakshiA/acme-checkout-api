@@ -22,3 +22,7 @@ refer to the whole product (web included).
 ## v2.21.1 — 2026-06-17
 
 - fix: rounding on tax lines
+
+## v2.21.2 — 2026-06-19
+
+- perf: index on subscriptions.customer_id
