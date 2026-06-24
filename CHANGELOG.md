@@ -26,3 +26,7 @@ refer to the whole product (web included).
 ## v2.21.2 — 2026-06-19
 
 - perf: index on subscriptions.customer_id
+
+## v2.22.0 — 2026-06-24
+
+- plan change API endpoint
