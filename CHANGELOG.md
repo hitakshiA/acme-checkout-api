@@ -30,3 +30,7 @@ refer to the whole product (web included).
 ## v2.22.0 — 2026-06-24
 
 - plan change API endpoint
+
+## v2.22.1 — 2026-06-26
+
+- fix: 429 handling in dunning worker
