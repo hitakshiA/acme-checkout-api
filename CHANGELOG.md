@@ -34,3 +34,7 @@ refer to the whole product (web included).
 ## v2.22.1 — 2026-06-26
 
 - fix: 429 handling in dunning worker
+
+## v2.22.2 — 2026-07-01
+
+- web: account page redesign behind flag
