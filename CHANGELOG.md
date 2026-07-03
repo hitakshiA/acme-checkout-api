@@ -38,3 +38,7 @@ refer to the whole product (web included).
 ## v2.22.2 — 2026-07-01
 
 - web: account page redesign behind flag
+
+## v2.23.0 — 2026-07-03
+
+- trial expiration emails
