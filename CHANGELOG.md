@@ -42,3 +42,7 @@ refer to the whole product (web included).
 ## v2.23.0 — 2026-07-03
 
 - trial expiration emails
+
+## v2.23.1 — 2026-07-08
+
+- fix: trial emails sent at midnight local time

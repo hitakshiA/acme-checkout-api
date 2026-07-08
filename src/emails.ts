@@ -1,4 +1,6 @@
 // Transactional email sending (trial expiration, dunning receipts).
+// v2.23.1: trial emails must go out at 09:00 in the customer's local time,
+// never at midnight -- we batch by timezone.
 
 export interface Customer {
   id: string;
@@ -23,15 +25,21 @@ function hourInTimezone(date: Date, timezone: string): number {
   return Number(fmt.format(date));
 }
 
-/** Everyone currently at midnight gets the nudge. */
+/** Timezones where it is currently 09:00, given the current UTC instant. */
+export function timezonesAt9am(date: Date, timezones: string[]): string[] {
+  return timezones.filter((tz) => hourInTimezone(date, tz) === 9);
+}
+
 export async function sendTrialEndingEmails(
   customers: Customer[],
   now: Date,
   send: SendEmailFn,
 ): Promise<number> {
+  const timezones = [...new Set(customers.map((c) => c.timezone))];
+  const due = new Set(timezonesAt9am(now, timezones));
   let sent = 0;
   for (const customer of customers) {
-    if (hourInTimezone(now, customer.timezone) !== 0) continue;
+    if (!due.has(customer.timezone)) continue;
     await send({
       to: customer.email,
       template: "trial_ending",
