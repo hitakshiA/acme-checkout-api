@@ -46,3 +46,7 @@ refer to the whole product (web included).
 ## v2.23.1 — 2026-07-08
 
 - fix: trial emails sent at midnight local time
+
+## v2.23.2 — 2026-07-10
+
+- account page flag defaults off again
