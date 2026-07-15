@@ -25,6 +25,7 @@ async function main(): Promise<void> {
 
   const shutdown = async (signal: string): Promise<void> => {
     console.log(`${signal} received, draining`);
+    await db.end();
     process.exit(0);
   };
   process.on("SIGTERM", () => void shutdown("SIGTERM"));

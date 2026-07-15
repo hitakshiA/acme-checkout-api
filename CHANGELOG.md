@@ -50,3 +50,7 @@ refer to the whole product (web included).
 ## v2.23.2 — 2026-07-10
 
 - account page flag defaults off again
+
+## v2.23.3 — 2026-07-15
+
+- fix: leaked db connection in webhook worker
