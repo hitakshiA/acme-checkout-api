@@ -54,3 +54,7 @@ refer to the whole product (web included).
 ## v2.23.3 — 2026-07-15
 
 - fix: leaked db connection in webhook worker
+
+## v2.24.0 — 2026-07-17
+
+- Stripe tax integration (beta)
