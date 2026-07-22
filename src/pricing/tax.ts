@@ -1,5 +1,6 @@
 // Tax lines (Stripe tax, beta since v2.24.0). Rounding rule is half-up to
 // the cent -- this is the rule the v2.21.1 fix established for tax lines.
+// Annual invoices are taxed per period, not per invoice (v2.24.1).
 
 import { roundHalfUp } from "./proration.ts";
 

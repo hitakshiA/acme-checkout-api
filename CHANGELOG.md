@@ -58,3 +58,7 @@ refer to the whole product (web included).
 ## v2.24.0 — 2026-07-17
 
 - Stripe tax integration (beta)
+
+## v2.24.1 — 2026-07-22
+
+- fix: tax on annual invoices
