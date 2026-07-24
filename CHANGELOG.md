@@ -62,3 +62,7 @@ refer to the whole product (web included).
 ## v2.24.1 — 2026-07-22
 
 - fix: tax on annual invoices
+
+## v2.24.2 — 2026-07-24
+
+- chore: node 22
