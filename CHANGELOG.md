@@ -66,3 +66,7 @@ refer to the whole product (web included).
 ## v2.24.2 — 2026-07-24
 
 - chore: node 22
+
+## v2.25.0 — 2026-07-29
+
+- usage-based add-ons
