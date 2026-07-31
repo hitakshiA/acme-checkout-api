@@ -70,3 +70,7 @@ refer to the whole product (web included).
 ## v2.25.0 — 2026-07-29
 
 - usage-based add-ons
+
+## v2.25.1 — 2026-07-31
+
+- fix: add-on quantity validation

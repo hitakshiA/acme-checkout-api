@@ -3,7 +3,7 @@ create table addon_usage (
   id uuid primary key default gen_random_uuid(),
   subscription_id uuid not null references subscriptions(id),
   addon_key text not null,
-  quantity integer not null,
+  quantity integer not null check (quantity > 0),
   period_start date not null,
   period_end date not null,
   created_at timestamptz not null default now()
