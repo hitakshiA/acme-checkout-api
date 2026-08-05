@@ -74,3 +74,7 @@ refer to the whole product (web included).
 ## v2.25.1 — 2026-07-31
 
 - fix: add-on quantity validation
+
+## v2.25.2 — 2026-08-05
+
+- web: pricing page AB test scaffolding (not wired up yet)
