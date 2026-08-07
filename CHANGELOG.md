@@ -78,3 +78,7 @@ refer to the whole product (web included).
 ## v2.25.2 — 2026-08-05
 
 - web: pricing page AB test scaffolding (not wired up yet)
+
+## v2.26.0 — 2026-08-07
+
+- webhook replay UI in the dashboard

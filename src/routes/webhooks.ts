@@ -28,6 +28,7 @@ interface WebhookDeliveryRow {
 export async function handleWebhooks(ctx: Ctx): Promise<void> {
   const url = ctx.req.url ?? "";
   if (url.endsWith("/test")) return sendTestEvent(ctx);
+  if (url.includes("/replay/")) return replayDelivery(ctx);
   return registerEndpoint(ctx);
 }
 
@@ -66,6 +67,32 @@ async function sendTestEvent(ctx: Ctx): Promise<void> {
       sign: (body: string) => signPayload(endpoint.secret, body, Date.now()),
     },
     payload,
+  });
+  sendJson(ctx, 200, result);
+}
+
+async function replayDelivery(ctx: Ctx): Promise<void> {
+  const deliveryId = ctx.params.deliveryId!;
+  const found = await ctx.db.query<WebhookDeliveryRow>(
+    "select * from webhook_deliveries where id = $1 limit 1",
+    [deliveryId],
+  );
+  if (found.rows.length === 0) throw new NotFoundError("webhook delivery", deliveryId);
+  const delivery = found.rows[0]!;
+  const endpointRows = await ctx.db.query<WebhookEndpointRow>(
+    "select * from webhook_endpoints where id = $1 limit 1",
+    [delivery.endpoint_id],
+  );
+  const endpoint = endpointRows.rows[0]!;
+
+  const result = await deliverWithRetryPolicy({
+    endpoint: {
+      url: endpoint.url,
+      headers: {},
+      sign: (body: string) => signPayload(endpoint.secret, body, Date.now()),
+    },
+    payload: delivery.payload,
+    replayOf: delivery.id,
   });
   sendJson(ctx, 200, result);
 }
