@@ -82,3 +82,7 @@ refer to the whole product (web included).
 ## v2.26.0 — 2026-08-07
 
 - webhook replay UI in the dashboard
+
+## v2.26.1 — 2026-08-12
+
+- fix: replay drops custom headers

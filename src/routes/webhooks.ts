@@ -85,10 +85,12 @@ async function replayDelivery(ctx: Ctx): Promise<void> {
   );
   const endpoint = endpointRows.rows[0]!;
 
+  // v2.26.1: replays must carry the endpoint's custom headers, same as the
+  // original delivery.
   const result = await deliverWithRetryPolicy({
     endpoint: {
       url: endpoint.url,
-      headers: {},
+      headers: endpoint.custom_headers ?? {},
       sign: (body: string) => signPayload(endpoint.secret, body, Date.now()),
     },
     payload: delivery.payload,
