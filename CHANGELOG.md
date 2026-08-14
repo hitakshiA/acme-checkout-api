@@ -86,3 +86,7 @@ refer to the whole product (web included).
 ## v2.26.1 — 2026-08-12
 
 - fix: replay drops custom headers
+
+## v2.26.2 — 2026-08-14
+
+- ci: shard checkout-api tests

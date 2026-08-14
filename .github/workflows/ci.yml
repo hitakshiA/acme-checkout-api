@@ -8,9 +8,13 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [pricing, webhooks, routes]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm test
+      # zero dependencies on purpose -- nothing to install
+      - run: node --test test/${{ matrix.shard }}/
