@@ -1,8 +1,20 @@
-// Dunning: retry failed subscription charges on a fixed schedule.
-// v2.22.1: respect 429s from the payment processor.
+// Dunning: retry failed subscription charges on a schedule.
+// v2.22.1 taught us to respect 429s from the payment processor.
 
 import type { Db } from "../db.ts";
 import { sleep } from "../webhooks/retry.ts";
+
+export interface DunningSchedule {
+  /** Days after the failed charge attempt. */
+  offsetDays: number;
+}
+
+export const defaultSchedule: DunningSchedule[] = [
+  { offsetDays: 1 },
+  { offsetDays: 3 },
+  { offsetDays: 5 },
+  { offsetDays: 10 },
+];
 
 export interface ChargeAttemptResult {
   status: "succeeded" | "failed" | "rate_limited";
@@ -11,17 +23,16 @@ export interface ChargeAttemptResult {
 
 export type ChargeFn = (invoiceId: string) => Promise<ChargeAttemptResult>;
 
-const RETRY_OFFSETS_DAYS = [1, 3, 5, 10];
-
 export async function runDunningCycle(
   db: Db,
   charge: ChargeFn,
+  schedule: DunningSchedule[] = defaultSchedule,
 ): Promise<{ processed: number; recovered: number }> {
   const open = await db.query<{ id: string; attempt_count: number }>(
     `select id, attempt_count from invoices
      where status in ('open', 'overdue') and attempt_count < $1
      order by due_at asc limit 100`,
-    [RETRY_OFFSETS_DAYS.length],
+    [schedule.length],
   );
   let recovered = 0;
   for (const invoice of open.rows) {

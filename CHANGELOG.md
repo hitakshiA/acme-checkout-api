@@ -90,3 +90,7 @@ refer to the whole product (web included).
 ## v2.26.2 — 2026-08-14
 
 - ci: shard checkout-api tests
+
+## v2.27.0 — 2026-08-19
+
+- dunning retry schedule configurable
