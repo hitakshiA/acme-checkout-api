@@ -94,3 +94,7 @@ refer to the whole product (web included).
 ## v2.27.0 — 2026-08-19
 
 - dunning retry schedule configurable
+
+## v2.27.1 — 2026-08-21
+
+- fix: dunning stops after card update

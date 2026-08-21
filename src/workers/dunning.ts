@@ -44,6 +44,11 @@ export async function runDunningCycle(
     }
     if (result.status === "succeeded") {
       await db.query("update invoices set status = 'paid' where id = $1", [invoice.id]);
+      // v2.27.1: once the card is updated and a charge lands, stop dunning.
+      await db.query(
+        "update subscriptions set status = 'active' where id = (select subscription_id from invoices where id = $1)",
+        [invoice.id],
+      );
       recovered += 1;
     } else {
       await db.query("update invoices set attempt_count = attempt_count + 1 where id = $1", [
