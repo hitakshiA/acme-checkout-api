@@ -98,3 +98,7 @@ refer to the whole product (web included).
 ## v2.27.1 — 2026-08-21
 
 - fix: dunning stops after card update
+
+## v2.27.2 — 2026-08-26
+
+- customer portal: update-card link
