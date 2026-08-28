@@ -102,3 +102,7 @@ refer to the whole product (web included).
 ## v2.27.2 — 2026-08-26
 
 - customer portal: update-card link
+
+## v2.27.3 — 2026-08-28
+
+- fix: portal link expiry 1h -> 24h
