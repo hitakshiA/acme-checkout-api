@@ -106,3 +106,7 @@ refer to the whole product (web included).
 ## v2.27.3 — 2026-08-28
 
 - fix: portal link expiry 1h -> 24h
+
+## v2.28.0 — 2026-09-02
+
+- annual invoices show a savings line
