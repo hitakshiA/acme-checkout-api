@@ -114,3 +114,7 @@ refer to the whole product (web included).
 ## v2.28.1 — 2026-09-04
 
 - fix: savings line overflow on PDF
+
+## v2.28.2 — 2026-09-09
+
+- audit log for refunds
