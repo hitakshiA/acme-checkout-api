@@ -118,3 +118,7 @@ refer to the whole product (web included).
 ## v2.28.2 — 2026-09-09
 
 - audit log for refunds
+
+## v2.29.0 — 2026-09-11
+
+- refund API: partial refunds
