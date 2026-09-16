@@ -1,5 +1,8 @@
 // Refunds (v2.29.0: partial refunds). Every refund writes a refund_audit
 // row in the same transaction (v2.28.2).
+//
+// v2.29.1: refunds are idempotent per (invoice, amount) within a day --
+// the dashboard double-click used to create two refunds.
 
 import type { Ctx } from "../server.ts";
 import { sendJson } from "../server.ts";
@@ -36,6 +39,19 @@ export async function handleRefunds(ctx: Ctx): Promise<void> {
   if (invoice.rows.length === 0) throw new NotFoundError("invoice", body.invoice_id);
   if (body.amount_cents > invoice.rows[0]!.amount_cents) {
     sendJson(ctx, 422, { error: "validation", message: "refund exceeds the invoice amount" });
+    return;
+  }
+
+  // v2.29.1: guard against the double click
+  const recent = await ctx.db.query<RefundRow>(
+    `select * from refund_audit
+     where invoice_id = $1 and amount_cents = $2
+       and created_at > now() - interval '1 day'
+     limit 1`,
+    [body.invoice_id, body.amount_cents],
+  );
+  if (recent.rows.length > 0) {
+    sendJson(ctx, 200, recent.rows[0]);
     return;
   }
 

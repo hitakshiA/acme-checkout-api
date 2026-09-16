@@ -122,3 +122,7 @@ refer to the whole product (web included).
 ## v2.29.0 — 2026-09-11
 
 - refund API: partial refunds
+
+## v2.29.1 — 2026-09-16
+
+- fix: refund race on double click
