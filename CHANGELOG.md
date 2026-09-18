@@ -126,3 +126,7 @@ refer to the whole product (web included).
 ## v2.29.1 — 2026-09-16
 
 - fix: refund race on double click
+
+## v2.29.2 — 2026-09-18
+
+- web: locale switcher
