@@ -130,3 +130,7 @@ refer to the whole product (web included).
 ## v2.29.2 — 2026-09-18
 
 - web: locale switcher
+
+## v2.29.3 — 2026-09-23
+
+- fix: locale cookie on checkout embed
