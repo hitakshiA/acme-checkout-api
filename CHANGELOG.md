@@ -138,3 +138,7 @@ refer to the whole product (web included).
 ## v2.30.0 — 2026-09-25
 
 - checkout embed v2 (script tag)
+
+## v2.30.1 — 2026-09-30
+
+- fix: embed CSP on Safari
