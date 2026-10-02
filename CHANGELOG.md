@@ -142,3 +142,7 @@ refer to the whole product (web included).
 ## v2.30.1 — 2026-09-30
 
 - fix: embed CSP on Safari
+
+## v2.30.2 — 2026-10-02
+
+- metrics: checkout latency histogram
