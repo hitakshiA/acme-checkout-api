@@ -146,3 +146,7 @@ refer to the whole product (web included).
 ## v2.30.2 — 2026-10-02
 
 - metrics: checkout latency histogram
+
+## v2.30.3 — 2026-10-07
+
+- migrations: add subscriptions.plan_interval
