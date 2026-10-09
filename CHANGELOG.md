@@ -150,3 +150,7 @@ refer to the whole product (web included).
 ## v2.30.3 — 2026-10-07
 
 - migrations: add subscriptions.plan_interval
+
+## v2.30.4 — 2026-10-09
+
+- hotfix: plan_interval backfill batch size. This is the version we rolled back to on Oct 14.
