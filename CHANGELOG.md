@@ -154,3 +154,7 @@ refer to the whole product (web included).
 ## v2.30.4 — 2026-10-09
 
 - hotfix: plan_interval backfill batch size. This is the version we rolled back to on Oct 14.
+
+## v2.31.0 — 2026-10-14
+
+- billing_events table; migration added a NOT NULL column without a default. Rolled back at 14:49 UTC after 47 minutes of checkout 500s.
