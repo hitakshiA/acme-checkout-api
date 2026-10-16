@@ -158,3 +158,7 @@ refer to the whole product (web included).
 ## v2.31.0 — 2026-10-14
 
 - billing_events table; migration added a NOT NULL column without a default. Rolled back at 14:49 UTC after 47 minutes of checkout 500s.
+
+## v2.31.1 — 2026-10-16
+
+- fix: default for billing_events.status; migration lint follow-up still open
