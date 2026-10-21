@@ -7,6 +7,10 @@ export interface RateLimitResult {
   retryAfterSec: number;
 }
 
+export function throttledKey(storeId: string): string {
+  return `throttled{${storeId}}`;
+}
+
 export class RateLimiter {
   private readonly windows = new Map<string, { count: number; resetAt: number }>();
 
