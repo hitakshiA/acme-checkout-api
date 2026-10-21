@@ -41,6 +41,13 @@ export function attemptBucket(attempt: number): string {
   return "4+";
 }
 
+/** Attempt number -> a low-cardinality bucket label. */
+export function attemptBucket(attempt: number): string {
+  if (attempt <= 1) return "1";
+  if (attempt <= 3) return "2-3";
+  return "4+";
+}
+
 export function collect(): Sample[] {
   const out: Sample[] = [];
   for (const [k, v] of counters) {

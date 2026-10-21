@@ -162,3 +162,7 @@ refer to the whole product (web included).
 ## v2.31.1 — 2026-10-16
 
 - fix: default for billing_events.status; migration lint follow-up still open
+
+## v2.32.0 — 2026-10-21
+
+- billing_events backfill + retry metrics
