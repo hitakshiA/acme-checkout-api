@@ -14,8 +14,11 @@ export interface Sample {
 const counters = new Map<string, number>();
 const histograms = new Map<string, number[]>();
 
+const ALLOWED_LABELS = new Set(["outcome", "attempt_bucket", "endpoint"]);
+
 function key(name: string, labels: Record<string, string>): string {
   const parts = Object.entries(labels)
+    .filter(([k]) => ALLOWED_LABELS.has(k))
     .sort(([a], [b]) => (a < b ? -1 : 1))
     .map(([k, v]) => `${k}="${v}"`)
     .join(",");
@@ -32,13 +35,6 @@ export function observe(name: string, value: number, labels: Record<string, stri
   const arr = histograms.get(k) ?? [];
   arr.push(value);
   histograms.set(k, arr);
-}
-
-/** Attempt number -> a low-cardinality bucket label. */
-export function attemptBucket(attempt: number): string {
-  if (attempt <= 1) return "1";
-  if (attempt <= 3) return "2-3";
-  return "4+";
 }
 
 /** Attempt number -> a low-cardinality bucket label. */

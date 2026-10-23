@@ -166,3 +166,7 @@ refer to the whole product (web included).
 ## v2.32.0 — 2026-10-21
 
 - billing_events backfill + retry metrics
+
+## v2.32.1 — 2026-10-23
+
+- fix: retry metrics label cardinality
