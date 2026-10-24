@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Acme Checkout API - embeddable checkout and subscriptions for small online stores",
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "scripts": {
     "start": "node src/index.ts",
