@@ -170,3 +170,7 @@ refer to the whole product (web included).
 ## v2.32.1 — 2026-10-23
 
 - fix: retry metrics label cardinality
+
+## v2.32.2 — 2026-10-28
+
+- web: pricing page v3 scaffold merged behind a flag
