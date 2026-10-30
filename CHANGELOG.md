@@ -174,3 +174,7 @@ refer to the whole product (web included).
 ## v2.32.2 — 2026-10-28
 
 - web: pricing page v3 scaffold merged behind a flag
+
+## v2.33.0 — 2026-10-30
+
+- webhook backoff jitter

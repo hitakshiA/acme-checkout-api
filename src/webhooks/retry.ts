@@ -13,12 +13,15 @@ export interface RetryPolicy {
   baseMs: number;
   maxDelayMs: number;
   maxAttempts: number;
+  /** 0..1, fraction of the computed delay that is randomized. */
+  jitterRatio: number;
 }
 
 export const defaultRetryPolicy: RetryPolicy = {
   baseMs: 1_000,
   maxDelayMs: 60_000,
   maxAttempts: 6,
+  jitterRatio: 0.15,
 };
 
 export function backoffDelay(
@@ -26,7 +29,9 @@ export function backoffDelay(
   policy: RetryPolicy = defaultRetryPolicy,
 ): number {
   const raw = policy.baseMs * 2 ** (attempt - 1);
-  return Math.min(raw, policy.maxDelayMs);
+  const capped = Math.min(raw, policy.maxDelayMs);
+  const spread = capped * policy.jitterRatio;
+  return Math.round(capped - spread + Math.random() * 2 * spread) - 1;
 }
 
 export function sleep(ms: number): Promise<void> {

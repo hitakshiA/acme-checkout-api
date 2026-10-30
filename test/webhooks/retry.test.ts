@@ -13,6 +13,7 @@ const policy: RetryPolicy = {
   baseMs: 30,
   maxDelayMs: 1_000,
   maxAttempts: 3,
+  jitterRatio: 0, // deterministic backoff for this test (jitter ships in v2.33.0)
 };
 
 interface Span {
