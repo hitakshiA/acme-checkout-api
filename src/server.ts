@@ -79,6 +79,7 @@ function match(method: string, pathname: string): { handler: Handler; params: Re
 route("GET", "/healthz", (ctx) => sendJson(ctx, 200, { ok: true }));
 route("POST", "/v1/checkouts", handleCheckouts);
 route("GET", "/v1/checkouts/:id", handleCheckouts);
+route("POST", "/v1/checkouts/:id/complete", handleCheckouts);
 route("POST", "/v1/refunds", handleRefunds);
 route("POST", "/v1/subscriptions", handleSubscriptions);
 route("GET", "/v1/subscriptions/:id", handleSubscriptions);

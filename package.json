@@ -13,5 +13,8 @@
     "test:pricing": "node --test test/pricing/",
     "test:webhooks": "node --test test/webhooks/"
   },
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "stripe": "22.4.0"
+  }
 }
