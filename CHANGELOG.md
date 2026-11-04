@@ -194,3 +194,7 @@ refer to the whole product (web included).
 ## v2.34.1 — 2026-11-13
 
 - hotfix: embed load timeout on slow connections. Current version.
+
+## Unreleased
+
+- webhook delivery: fair scheduling per store + backlog drain gate on the eu worker (Moss & Pine delays end Nov 4)

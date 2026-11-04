@@ -80,3 +80,10 @@ export function fairSchedule(items: QueueItem[], perStoreCap = 4): QueueItem[] {
   }
   return out;
 }
+
+// Drain gate: admit new deliveries only once the backlog is under the high-water
+// mark. Backpressure beats unbounded queuing (the Oct 18–Nov 4 eu incident).
+export const QUEUE_HIGH_WATER = 500;
+export function admitNewDeliveries(queueDepth: number): boolean {
+  return queueDepth < QUEUE_HIGH_WATER;
+}
