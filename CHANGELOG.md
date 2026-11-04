@@ -178,3 +178,7 @@ refer to the whole product (web included).
 ## v2.33.0 — 2026-10-30
 
 - webhook backoff jitter
+
+## v2.33.1 — 2026-11-04
+
+- fix: backoff jitter off-by-one ms

@@ -31,7 +31,7 @@ export function backoffDelay(
   const raw = policy.baseMs * 2 ** (attempt - 1);
   const capped = Math.min(raw, policy.maxDelayMs);
   const spread = capped * policy.jitterRatio;
-  return Math.round(capped - spread + Math.random() * 2 * spread) - 1;
+  return Math.round(capped - spread + Math.random() * 2 * spread);
 }
 
 export function sleep(ms: number): Promise<void> {
