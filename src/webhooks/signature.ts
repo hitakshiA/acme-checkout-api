@@ -16,10 +16,15 @@ export function signPayload(secret: string, body: string, timestampMs: number): 
 }
 
 export function verifySignature(
-  secret: string,
+  secrets: string[],
   body: string,
   headerValue: string | undefined,
 ): boolean {
+  // rotation: accept the previous secret until the window closes
+  return secrets.some((secret) => verifyOne(secret, body, headerValue));
+}
+
+function verifyOne(secret: string, body: string, headerValue: string | undefined): boolean {
   if (!headerValue) return false;
   const parts = new Map(
     headerValue.split(",").map((kv) => {
