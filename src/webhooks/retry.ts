@@ -93,11 +93,13 @@ export class WebhookRetrier extends EventEmitter {
     }
   }
 
-  private async acquire(key: string): Promise<void> {
-    while (this.busy.has(key)) {
-      await sleep(1); // wait for the in-flight delivery to finish
-    }
-    await this.beginDelivery(key);
-    this.busy.add(key);
+  private readonly tails = new Map<string, Promise<void>>();
+
+  private acquire(key: string): Promise<void> {
+    // chain every delivery on the previous one's tail. no check-then-act
+    const tail = this.tails.get(key) ?? Promise.resolve();
+    const next = tail.then(() => this.beginDelivery(key));
+    this.tails.set(key, next.then(() => {}, () => {}));
+    return next;
   }
 }
