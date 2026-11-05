@@ -187,13 +187,18 @@ refer to the whole product (web included).
 
 - idempotency keys on checkout create
 
-## v2.34.0 — 2026-11-11
+## v2.34.0 — 2026-11-02
 
 - export: subscription report CSV
 
-## v2.34.1 — 2026-11-13
+## v2.34.1 — 2026-11-04
 
-- hotfix: embed load timeout on slow connections. Current version.
+- hotfix: embed load timeout on slow connections.
+
+## v2.34.2 — 2026-11-05
+
+- checkout: the card is charged when the session completes (`POST /v1/checkouts/:id/complete`). Current version.
+- payments: stripe-node network retries off; the charge worker retries failed charges itself.
 
 ## Unreleased
 
