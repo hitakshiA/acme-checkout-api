@@ -18,3 +18,7 @@ jobs:
           node-version: 24
       # zero dependencies on purpose -- nothing to install
       - run: node --test test/${{ matrix.shard }}/
+  # Known red on main:
+  #  - test/pricing/proration.test.ts (ENG-148: proration rounds down)
+  #  - test/webhooks/retry.test.ts is flaky ~1 in 5 (ENG-233)
+  # Keeping the suite honest beats keeping it green.
