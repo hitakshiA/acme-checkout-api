@@ -182,3 +182,7 @@ refer to the whole product (web included).
 ## v2.33.1 — 2026-11-04
 
 - fix: backoff jitter off-by-one ms
+
+## v2.33.2 — 2026-11-06
+
+- idempotency keys on checkout create

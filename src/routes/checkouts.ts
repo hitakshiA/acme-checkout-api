@@ -1,4 +1,5 @@
 // Checkout sessions. POST creates a session for the embed; GET reads one.
+// Idempotency-Key is honored on create (v2.33.2).
 
 import type { Ctx } from "../server.ts";
 import { sendJson } from "../server.ts";
@@ -42,11 +43,27 @@ async function createCheckout(ctx: Ctx): Promise<void> {
     return;
   }
 
+  const idempotencyKey =
+    (ctx.req.headers["idempotency-key"] as string | undefined) ?? null;
+
+  // v2.33.2: replaying a create with the same Idempotency-Key returns the
+  // original session instead of a second charge attempt.
+  if (idempotencyKey) {
+    const existing = await ctx.db.query<CheckoutRow>(
+      "select * from checkouts where store_id = $1 and idempotency_key = $2 limit 1",
+      [store_id, idempotencyKey],
+    );
+    if (existing.rows.length > 0) {
+      sendJson(ctx, 200, existing.rows[0]);
+      return;
+    }
+  }
+
   const inserted = await ctx.db.query<CheckoutRow>(
-    `insert into checkouts (store_id, plan_id, amount_cents, currency, status)
-     values ($1, $2, $3, $4, 'open')
+    `insert into checkouts (store_id, plan_id, amount_cents, currency, status, idempotency_key)
+     values ($1, $2, $3, $4, 'open', $5)
      returning *`,
-    [store_id, plan_id, amount_cents, currency ?? "eur"],
+    [store_id, plan_id, amount_cents, currency ?? "eur", idempotencyKey],
   );
   sendJson(ctx, 201, inserted.rows[0]);
 }
