@@ -186,3 +186,7 @@ refer to the whole product (web included).
 ## v2.33.2 — 2026-11-06
 
 - idempotency keys on checkout create
+
+## v2.34.0 — 2026-11-11
+
+- export: subscription report CSV
