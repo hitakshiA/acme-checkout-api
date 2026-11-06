@@ -198,3 +198,5 @@ refer to the whole product (web included).
 ## Unreleased
 
 - webhook delivery: fair scheduling per store + backlog drain gate on the eu worker (Moss & Pine delays end Nov 4)
+
+- invoice API v1: GET /invoices, GET /invoices/:id (read-only, for the invoice page)
