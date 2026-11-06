@@ -190,3 +190,7 @@ refer to the whole product (web included).
 ## v2.34.0 — 2026-11-11
 
 - export: subscription report CSV
+
+## v2.34.1 — 2026-11-13
+
+- hotfix: embed load timeout on slow connections. Current version.
