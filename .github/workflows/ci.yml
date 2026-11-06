@@ -18,3 +18,5 @@ jobs:
           node-version: 24
       # zero dependencies on purpose -- nothing to install
       - run: node --test test/${{ matrix.shard }}/
+      - if: matrix.shard == 'webhooks'
+        run: for i in $(seq 20); do node --test test/webhooks/ || exit 1; done
