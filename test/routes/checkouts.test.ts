@@ -59,7 +59,7 @@ test("checkout create + idempotency + read", async () => {
 
   const create = await fetch(`${base}/v1/checkouts`, {
     method: "POST",
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json", "idempotency-key": "acme:test:1" },
     body: JSON.stringify({
       store_id: "store_1",
       plan_id: "growth",
@@ -70,6 +70,15 @@ test("checkout create + idempotency + read", async () => {
   assert.equal(create.status, 201);
   const checkout = (await create.json()) as Row;
   assert.equal(checkout.status, "open");
+
+  const replay = await fetch(`${base}/v1/checkouts`, {
+    method: "POST",
+    headers: { "content-type": "application/json", "idempotency-key": "acme:test:1" },
+    body: JSON.stringify({ store_id: "store_1", plan_id: "growth", amount_cents: 9900 }),
+  });
+  assert.equal(replay.status, 200);
+  const same = (await replay.json()) as Row;
+  assert.equal(same.id, checkout.id, "same idempotency key returns the same checkout");
 
   const read = await fetch(`${base}/v1/checkouts/${checkout.id}`);
   assert.equal(read.status, 200);
