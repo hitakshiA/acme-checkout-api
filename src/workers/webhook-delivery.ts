@@ -64,3 +64,26 @@ export async function deliverWithRetryPolicy(req: DeliveryRequest): Promise<Deli
 
   return { ok: true, attempts, status: lastStatus, replay_of: req.replayOf };
 }
+
+// --- fair scheduling (eu worker backlog, Nov 2026) ---
+// Round-robin over stores with a per-store cap, so one retrying store cannot
+// starve the queue. Used by the delivery worker before admitting new work.
+export interface QueueItem { storeId: string; enqueuedAt: number; run: () => Promise<void>; }
+
+export function fairSchedule(items: QueueItem[], perStoreCap = 4): QueueItem[] {
+  const byStore = new Map<string, QueueItem[]>();
+  for (const it of items) (byStore.get(it.storeId) ?? byStore.set(it.storeId, []).get(it.storeId)!).push(it);
+  for (const list of byStore.values()) list.sort((a, b) => a.enqueuedAt - b.enqueuedAt);
+  const out: QueueItem[] = [];
+  while (out.length < items.length) {
+    for (const [, list] of byStore) out.push(...list.splice(0, perStoreCap));
+  }
+  return out;
+}
+
+// Drain gate: admit new deliveries only once the backlog is under the high-water
+// mark. Backpressure beats unbounded queuing (the Oct 18–Nov 4 eu incident).
+export const QUEUE_HIGH_WATER = 500;
+export function admitNewDeliveries(queueDepth: number): boolean {
+  return queueDepth < QUEUE_HIGH_WATER;
+}
