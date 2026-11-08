@@ -125,3 +125,4 @@ export function createApp(db: Db, config: Partial<ServerConfig> = {}): Server {
     }
   });
 }
+import { handleInvoices } from "./routes/invoices.ts";
