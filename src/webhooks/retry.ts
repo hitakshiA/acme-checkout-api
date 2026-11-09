@@ -8,6 +8,7 @@
 // never see two posts for the same event at once (replays included).
 
 import { EventEmitter } from "node:events";
+import { performance } from "node:perf_hooks";
 
 export interface RetryPolicy {
   baseMs: number;
@@ -40,10 +41,22 @@ export function sleep(ms: number): Promise<void> {
   });
 }
 
+/**
+ * Monotonic milliseconds for measuring backoff. Unlike `Date.now()`, which is
+ * a wall clock with whole-ms resolution and can step (NTP, DST, suspend), this
+ * only moves forward and keeps sub-ms precision, so a measured gap never comes
+ * out shorter than the delay that was actually asked for.
+ */
+export function monotonicNow(): number {
+  return performance.now();
+}
+
 export interface RetryEvent {
   key: string;
   attempt: number;
   delayMs?: number;
+  /** Monotonic timestamp (ms) of when this attempt started. */
+  atMs?: number;
   error?: unknown;
 }
 
@@ -73,7 +86,11 @@ export class WebhookRetrier extends EventEmitter {
     await this.acquire(key);
     try {
       for (let attempt = 1; ; attempt++) {
-        this.emit("attempt", { key, attempt } satisfies RetryEvent);
+        this.emit("attempt", {
+          key,
+          attempt,
+          atMs: monotonicNow(),
+        } satisfies RetryEvent);
         try {
           await deliver(attempt);
           this.emit("delivered", { key, attempt } satisfies RetryEvent);
