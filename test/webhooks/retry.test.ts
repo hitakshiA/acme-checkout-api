@@ -6,7 +6,9 @@
 // stamps every `attempt` event with a monotonic timestamp (`monotonicNow()`,
 // backed by `performance.now()`), and the test times the backoff off those
 // stamps instead of reading the clock at the call site, so the measurement and
-// the timer share one clock and the strict bounds below need no tolerance.
+// the timer share one clock. The retrier sleeps the backoff with `sleepAtLeast`,
+// which re-arms until the monotonic deadline has really passed, so the strict
+// bounds below hold with no tolerance.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -90,6 +92,8 @@ test("retries a failed webhook with backoff", async () => {
   const b = spans.get("replay")!;
   assert.ok(a.attempts[1]! - a.attempts[0]! >= 30, "original: first retry must wait >= 30ms");
   assert.ok(a.attempts[2]! - a.attempts[1]! >= 60, "original: second retry must wait >= 60ms");
+  assert.ok(b.attempts[1]! - b.attempts[0]! >= 30, "replay: first retry must wait >= 30ms");
+  assert.ok(b.attempts[2]! - b.attempts[1]! >= 60, "replay: second retry must wait >= 60ms");
 
   // a replay must never run alongside the delivery it is replaying
   assert.ok(
