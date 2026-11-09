@@ -35,25 +35,18 @@ export function backoffDelay(
   return Math.round(capped - spread + Math.random() * 2 * spread);
 }
 
-export function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
 /**
- * Sleep for at least `ms`. `setTimeout` is allowed to fire a fraction of a
- * millisecond before the deadline it was given, which is how a 30ms backoff
- * could be observed at 29.3ms; this re-arms on the remainder until the
- * monotonic clock says the full delay has passed.
+ * Sleep for at least `ms`. `setTimeout` schedules on the truncated ms clock and
+ * is allowed to wake a fraction of a millisecond early, which is how a 30ms
+ * backoff could be observed at 29.3ms. So: measure elapsed time on the
+ * monotonic clock and re-sleep whatever is left of the pad until it is spent.
  */
-export async function sleepAtLeast(ms: number): Promise<void> {
+export async function sleep(ms: number): Promise<void> {
   const deadline = monotonicNow() + ms;
-  let remaining = ms;
-  for (;;) {
-    await sleep(remaining);
-    remaining = deadline - monotonicNow();
-    if (remaining <= 0) return;
+  for (let remaining = ms; remaining > 0; remaining = deadline - monotonicNow()) {
+    await new Promise<void>((resolve) => {
+      setTimeout(resolve, remaining);
+    });
   }
 }
 
@@ -118,7 +111,7 @@ export class WebhookRetrier extends EventEmitter {
           }
           const delayMs = backoffDelay(attempt, this.policy);
           this.emit("retryScheduled", { key, attempt, delayMs } satisfies RetryEvent);
-          await sleepAtLeast(delayMs);
+          await sleep(delayMs);
         }
       }
     } finally {

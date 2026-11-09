@@ -6,8 +6,8 @@
 // stamps every `attempt` event with a monotonic timestamp (`monotonicNow()`,
 // backed by `performance.now()`), and the test times the backoff off those
 // stamps instead of reading the clock at the call site, so the measurement and
-// the timer share one clock. The retrier sleeps the backoff with `sleepAtLeast`,
-// which re-arms until the monotonic deadline has really passed, so the strict
+// the timer share one clock. `sleep` itself measures elapsed time monotonically
+// and re-sleeps the remainder, so it really sleeps the whole pad and the strict
 // bounds below hold with no tolerance.
 
 import { test } from "node:test";
