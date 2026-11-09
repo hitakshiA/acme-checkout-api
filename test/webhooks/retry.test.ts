@@ -52,15 +52,14 @@ test("retries a failed webhook with backoff", async () => {
     ["replay", emptySpan()],
   ]);
   // both deliveries share one key (that is the point: the replay is the same
-  // event), so `attempt` events are attributed by which deliver body ran last
-  const name = { current: "original" as string };
+  // event), so each deliver body takes the stamps that were emitted since the
+  // previous one -- the delivery that is running now is the one that collects
   const stamps: RetryEvent[] = [];
   retrier.on("attempt", (event: RetryEvent) => {
     stamps.push(event);
   });
 
   const makeDeliver = (delivery: string) => async (): Promise<void> => {
-    name.current = delivery;
     spans.get(delivery)!.end = monotonicNow();
     // copy the stamps collected for this attempt onto the span, right here,
     // outside the event listener
