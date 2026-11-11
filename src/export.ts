@@ -10,6 +10,8 @@ export interface ExportRow {
   status: string;
   mrr_cents: number;
   started_at: string;
+  churn_reason: string | null;
+  last_invoice_date: string | null;
 }
 
 const COLUMNS: (keyof ExportRow)[] = [
@@ -20,6 +22,8 @@ const COLUMNS: (keyof ExportRow)[] = [
   "status",
   "mrr_cents",
   "started_at",
+  "churn_reason",
+  "last_invoice_date",
 ];
 
 export function toCsv(rows: ExportRow[]): string {
@@ -45,7 +49,9 @@ export async function exportSubscriptionReport(db: Db): Promise<string> {
             s.plan_interval,
             s.status,
             s.mrr_cents,
-            s.started_at
+            s.started_at,
+            s.churn_reason,
+            s.last_invoice_date
      from subscriptions s
      join customers c on c.id = s.customer_id
      order by s.started_at desc`,
