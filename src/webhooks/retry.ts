@@ -8,6 +8,7 @@
 // never see two posts for the same event at once (replays included).
 
 import { EventEmitter } from "node:events";
+import { performance } from "node:perf_hooks";
 
 export interface RetryPolicy {
   baseMs: number;
@@ -34,16 +35,37 @@ export function backoffDelay(
   return Math.round(capped - spread + Math.random() * 2 * spread);
 }
 
-export function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
+/**
+ * Sleep for at least `ms`. `setTimeout` schedules on the truncated ms clock and
+ * is allowed to wake a fraction of a millisecond early, which is how a 30ms
+ * backoff could be observed at 29.3ms. So: measure elapsed time on the
+ * monotonic clock and re-sleep whatever is left of the pad until it is spent.
+ */
+export async function sleep(ms: number): Promise<void> {
+  const deadline = monotonicNow() + ms;
+  for (let remaining = ms; remaining > 0; remaining = deadline - monotonicNow()) {
+    await new Promise<void>((resolve) => {
+      setTimeout(resolve, remaining);
+    });
+  }
+}
+
+/**
+ * Monotonic milliseconds for measuring backoff. Unlike `Date.now()`, which is
+ * a wall clock with whole-ms resolution and can step (NTP, DST, suspend), this
+ * only moves forward and keeps sub-ms precision, so a measured gap never comes
+ * out shorter than the delay that was actually asked for.
+ */
+export function monotonicNow(): number {
+  return performance.now();
 }
 
 export interface RetryEvent {
   key: string;
   attempt: number;
   delayMs?: number;
+  /** Monotonic timestamp (ms) of when this attempt started. */
+  atMs?: number;
   error?: unknown;
 }
 
@@ -73,7 +95,11 @@ export class WebhookRetrier extends EventEmitter {
     await this.acquire(key);
     try {
       for (let attempt = 1; ; attempt++) {
-        this.emit("attempt", { key, attempt } satisfies RetryEvent);
+        this.emit("attempt", {
+          key,
+          attempt,
+          atMs: monotonicNow(),
+        } satisfies RetryEvent);
         try {
           await deliver(attempt);
           this.emit("delivered", { key, attempt } satisfies RetryEvent);
