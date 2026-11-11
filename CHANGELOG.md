@@ -202,6 +202,8 @@ refer to the whole product (web included).
 
 ## Unreleased
 
+- checkout: one charge per checkout on `POST /v1/checkouts/:id/complete` (explicit Stripe idempotency key + atomic open->charging claim). Fixes ENG-488.
+
 - webhook delivery: fair scheduling per store + backlog drain gate on the eu worker (Moss & Pine delays end Nov 4)
 
 - invoice API v1: GET /invoices, GET /invoices/:id (read-only, for the invoice page)
