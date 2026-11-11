@@ -40,7 +40,7 @@ export function computeProration(input: ProrationInput): Proration {
 
   const unusedDays = cycleDays - usedDays;
   const dailyCents = priceCents / cycleDays;
-  const creditCents = Math.floor(dailyCents * unusedDays); // rounds down; spec says half-up
+  const creditCents = roundHalfUp(dailyCents * unusedDays); // half-up per billing spec
   return {
     creditCents,
     chargeCents: priceCents - creditCents,
